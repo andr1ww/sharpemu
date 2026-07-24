@@ -239,7 +239,7 @@ public sealed unsafe class PhysicalVirtualMemory : IVirtualMemory, IGuestMemoryA
         var protection = executable ? PAGE_EXECUTE_READWRITE : PAGE_READWRITE;
         var hostProtection = executable ? HostPageProtection.ReadWriteExecute : HostPageProtection.ReadWrite;
 
-        // we want to only reserve, huge pages are committed later on. - andr1ww
+        // Reserve address space only for very large non-executable regions; commit is done lazily later.
         var reservedOnly = !executable &&
             alignedSize >= LargeDataReserveThreshold &&
             alignedSize > FullCommitRegionLimit;
